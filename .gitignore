@@ -34,3 +34,6 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /.phpunit.cache/test-results
+public/build/manifest.json
+public/build/assets/app-CvgioS1y.js
+public/build/assets/app-l0sNRNKZ.js

@@ -1,0 +1,22 @@
+{
+  "name": "Laravel + Krayin",
+  "image": "mcr.microsoft.com/devcontainers/php:8.2",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "lts" },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/mysql:1": {
+      "version": "8.0",
+      "mysqlDatabase": "app",
+      "mysqlUser": "app",
+      "mysqlPassword": "app123",
+      "mysqlRootPassword": "root123"
+    }
+  },
+  "forwardPorts": [8000, 5173, 3306],
+  "portsAttributes": {
+    "8000": { "label": "Laravel" },
+    "5173": { "label": "Vite" },
+    "3306": { "label": "MySQL" }
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y unzip && php -v && composer -V"
+}
