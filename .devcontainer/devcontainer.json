@@ -8,5 +8,5 @@
     "ghcr.io/devcontainers/features/git:1": {}
   },
   "forwardPorts": [8000, 5173, 3306],
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y unzip zlib1g-dev libzip-dev libpng-dev libjpeg-dev libfreetype6-dev && docker-php-ext-configure gd --with-freetype --with-jpeg && docker-php-ext-install -j$(nproc) gd zip calendar && echo 'XDEBUG_MODE=off' | sudo tee -a /etc/environment && php -m | grep -E 'gd|zip|calendar'"
+  "postCreateCommand": "set -e; sudo apt-get update; sudo apt-get install -y unzip zlib1g-dev libzip-dev libpng-dev libjpeg-dev libfreetype6-dev; sudo bash -lc 'export PHP_INI_DIR=/usr/local/etc/php; docker-php-ext-configure gd --with-freetype --with-jpeg; docker-php-ext-install -j$(nproc) gd zip calendar; docker-php-ext-enable gd zip calendar'; echo 'xdebug.mode=off' | sudo tee /usr/local/etc/php/conf.d/99-xdebug-cli.ini >/dev/null; php -m | grep -E 'calendar|gd|zip'"
 }
