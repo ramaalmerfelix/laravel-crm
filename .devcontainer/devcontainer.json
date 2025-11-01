@@ -11,7 +11,7 @@
     "3306": { "label": "MySQL","visibility": "private" }
   },
 
-  "postCreateCommand": "php -v && php -m | grep -E 'pdo_mysql|gd|zip|calendar' || true",
+  "postCreateCommand": "php -m | grep -E 'pdo_mysql|gd|zip|calendar' || true",
   "postStartCommand": "git config --global --add safe.directory /workspaces/laravel-crm",
   "remoteUser": "vscode"
 }
