@@ -1,16 +1,11 @@
 {
-  "name": "Laravel + Krayin",
-  "image": "mcr.microsoft.com/devcontainers/php:8.2",
+  "name": "Laravel + MySQL (Compose)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "features": {
     "ghcr.io/devcontainers/features/node:1": { "version": "lts" },
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/mysql:1": {
-      "version": "8.0",
-      "mysqlDatabase": "app",
-      "mysqlUser": "app",
-      "mysqlPassword": "app123",
-      "mysqlRootPassword": "root123"
-    }
+    "ghcr.io/devcontainers/features/git:1": {}
   },
   "forwardPorts": [8000, 5173, 3306],
   "portsAttributes": {
