@@ -304,6 +304,39 @@ php artisan analytics:apriori --from=2025-01-01 --to=2025-06-30 --support=0.05 -
 
 ---
 
+## 12a) Branding Overrides (Logo & Powered By)
+- Ganti Logo Admin (upgrade‑safe, via seeder):
+  - Letakkan file logo di `database/seeders/assets/admin-logo.(png|jpg|jpeg|webp|svg)`.
+  - (Opsional) Favicon di `database/seeders/assets/favicon.(png|ico|svg|jpg|jpeg|webp)`.
+  - Seeder: `database/seeders/AppLogoSeeder.php`.
+    - Menyalin logo ke disk `public` (`storage/app/public/configuration/...`).
+    - Menulis `core_config` keys:
+      - `general.general.admin_logo.logo_image` (utama)
+      - `general.design.admin_logo.logo_image` (kompatibilitas view lama)
+      - `general.design.admin_logo.favicon` (jika favicon ada)
+  - Jalankan: `php artisan storage:link` (sekali) lalu `php artisan db:seed --class=AppLogoSeeder`.
+  - Alternatif manual via UI: Admin → Configuration → General → General → Admin Logo.
+
+- Ganti Footer (teks bawah aplikasi):
+  - Seeder: `database/seeders/AppFooterSeeder.php`.
+    - Ubah variabel `$footerHtml` sesuai kebutuhan.
+    - Menulis `core_config` key `general.settings.footer.label` (HTML diperbolehkan).
+  - Jalankan: `php artisan db:seed --class=AppFooterSeeder`.
+  - Lokasi UI: Admin → Configuration → General → Settings → Footer.
+
+- Ganti “Powered by …” di halaman Login (tanpa ubah core):
+  - Override translasi: `resources/lang/vendor/admin/en/app.php`.
+    - Key: `admin::app.components.layouts.powered-by.description`.
+    - Contoh isi saat ini: `PT Famindo Teknik Karya Utama — Market Basket Analysis (Apriori) for sales recommendations.`
+  - Setelah ubah, jalankan `php artisan optimize:clear` lalu refresh halaman login.
+
+- Catatan teknis:
+  - View yang membaca logo mengambil dari `core()->getConfigData('general.general.admin_logo.logo_image')` dan sebagian lama `general.design.admin_logo.logo_image`.
+  - Storage URL menggunakan disk `public` → pastikan `APP_URL` benar dan symlink `public/storage` tersedia.
+  - Jika ingin “tahun berjalan” di footer tanpa reseed tahunan, pertimbangkan override view untuk render dinamis; saat ini seeder menempelkan tahun saat dieksekusi.
+
+---
+
 ## 13) Kontak & Eskalasi
 - **Teknis**: masalah dependency/ekstensi PHP/Composer.
 - **Data**: seeding & konsistensi mapping Leads/Quotes/Quote Items.

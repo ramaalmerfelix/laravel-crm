@@ -182,6 +182,12 @@ class LeadQuoteDemoSeeder extends Seeder
 
                 $closeDate = $this->randomDateIn2025();
                 $createdAt = (clone $closeDate)->subDays(random_int(20, 90))->setTime(random_int(8, 16), random_int(0, 59));
+
+                // Clamp createdAt so it never goes before 1 Jan 2025
+                $minStart = \Carbon\Carbon::create(2025, 1, 1, 8, 0, 0);
+                if ($createdAt->lt($minStart)) {
+                    $createdAt = (clone $minStart);
+                }
                 $closedAt = (clone $closeDate)->setTime(random_int(10, 18), random_int(0, 59));
 
                 $leadTitle = $bundle['label'].' untuk '.$plan['name'];
@@ -619,7 +625,23 @@ class LeadQuoteDemoSeeder extends Seeder
     {
         $start = Carbon::create(2025, 1, 1, 10, 0, 0);
 
-        return (clone $start)->addDays(random_int(0, 364));
+        // End depends on current year
+        $now = Carbon::now();
+        if ($now->year === 2025) {
+            $end = $now->copy()->setTime(18, 0, 0);
+        } else {
+            // Cap at 30 Dec 2025 (as requested)
+            $end = Carbon::create(2025, 12, 30, 18, 0, 0);
+        }
+
+        if ($end->lt($start)) {
+            // Fallback: if environment clock is before 2025-01-01
+            $end = $start->copy();
+        }
+
+        $days = $start->diffInDays($end);
+
+        return (clone $start)->addDays(random_int(0, max(0, $days)));
     }
 
     private function computeLeadValue(array $items): float
